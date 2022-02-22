@@ -11,6 +11,16 @@ require('dotenv').config()
 const app = express()
 const port = process.env.PORT || 3030
 
+
+//connection test Mysql
+connection.connect((err) => {
+	if (err) {
+		console.error("error connecting: " + err.stack)
+	} else {
+		console.log("connected to database with threadId :  " + connection.threadId)
+	}
+})
+
 // pre-routes middlewares
 app.use(cors())
 app.use(morgan('dev'))
@@ -19,6 +29,9 @@ app.use(express.urlencoded({ extended: true }))
 
 //routes
 // app.use("/api/exemple", routes.exemple);
+app.use('/articles',routes.articles)
+app.use('/regions', routes.regions)
+app.use('/villes', routes.villes) // Rajout de roro
 
 app.get('/', (req, res) => {
   res.status(200).send('Yo !')
