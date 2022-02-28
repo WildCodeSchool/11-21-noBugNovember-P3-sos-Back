@@ -34,6 +34,7 @@ app.use('/villes', routes.villes)
 app.use('/secteurs',routes.secteurs) //BY BALROG
 app.use('/sousCategories',routes.sousCategories) //BY BALROG
 app.use('/categories', routes.categories)
+app.use('/telechargements', routes.telechargements)
 
 app.get('/', (req, res) => {
   res.status(200).send('Yo !')
