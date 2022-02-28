@@ -34,7 +34,22 @@ router.post('/', (req, res) => {
   })
 })
 
+// Routes DELETE
 
-
+router.delete('/:id', (req, res) => {
+  const villeId = req.params.id
+  mysql.query(
+    'DELETE FROM villes WHERE id_ville=?',
+    [villeId],
+    (err, result) => {
+      if (err) {
+        console.log(err)
+        res.status(500).send('Error deleting a ville')
+      } else {
+        res.sendStatus(204)
+      }
+    }
+  )
+})
 
 module.exports = router
