@@ -6,6 +6,8 @@ const mysql = require('../config/db')
 //     res.status(200).send("Dans régions")
 // })
 
+// Routes GET
+
 router.get('/', (req, res) => {
   const sql = 'SELECT * FROM regions'
   mysql.query(sql, (err, result) => {
