@@ -19,17 +19,19 @@ router.get('/', (req, res) => {
   })
 })
 
+
 // Routes POST
 
 router.post('/', (req, res) => {
   const { nom_sous_categorie, categorie_id } = req.body
-  sql = 'INSERT INTO sous_categories (nom_sous_categorie, categorie_id) VALUES (?,?);'
+  sql =
+    'INSERT INTO sous_categories (nom_sous_categorie, categorie_id) VALUES (?,?);'
 
   mysql.query(sql, [nom_sous_categorie, categorie_id], (err, result) => {
     if (err) {
       res.status(500).send('Error saving sous_categorie')
     } else {
-        console.log(result)
+      console.log(result)
       const id = result.insertId
       const createdSousCategorie = { id, nom_sous_categorie, categorie_id }
       res.status(201).json(createdSousCategorie)
