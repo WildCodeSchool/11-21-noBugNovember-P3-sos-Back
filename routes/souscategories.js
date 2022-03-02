@@ -38,5 +38,39 @@ router.post('/', (req, res) => {
 })
 
 
+router.put("/:id", (req, res) => {
+  const sous_categorieId = req.params.id;
+  const sous_categoriePropsToUpdate = req.body;
+    mysql.query(
+    "UPDATE sous_categories SET ? WHERE id_sous_categorie = ?",
+    [sous_categoriePropsToUpdate, sous_categorieId],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error updating a sous_categorie");
+      } else {
+        res.status(200).send("sous_categories updated successfully 🎉");
+      }
+    }
+  )
+});
+
+router.delete("/:id", (req, res) => {
+  const sous_categorieId = req.params.id;
+  console.log(sous_categorieId)
+  mysql.query(
+    "DELETE FROM sous_categories WHERE id_sous_categorie = ?",
+    [sous_categorieId],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("😱 Error deleting an sous_categorie");
+      } else {
+        res.sendStatus(204);
+      }
+    }
+  )
+});
+
 
 module.exports = router

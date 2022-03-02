@@ -34,6 +34,40 @@ router.post('/', (req, res) => {
   })
 })
 
+router.put("/:id", (req, res) => {
+  const villeId = req.params.id;
+  const villePropsToUpdate = req.body;
+    mysql.query(
+    "UPDATE villes SET ? WHERE id_ville = ?",
+    [villePropsToUpdate, villeId],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error updating a ville");
+      } else {
+        res.status(200).send("Ville updated successfully 🎉");
+      }
+    }
+  )
+});
+
+router.delete("/:id", (req, res) => {
+  const userId = req.params.id;
+  console.log(userId)
+  mysql.query(
+    "DELETE FROM villes WHERE id_ville = ?",
+    [userId],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("😱 Error deleting an user");
+      } else {
+        res.sendStatus(204);
+      }
+    }
+  )
+});
+
 
 
 
