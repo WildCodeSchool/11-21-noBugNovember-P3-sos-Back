@@ -1,7 +1,7 @@
 //Dependences
 const cors = require('cors')
 // const express = require('express')
-import express from 'express'
+const express = require('express')
 const morgan = require('morgan')
 // const routes = require('./routes/index')
 const {setupRoutes} = require('./routes')
