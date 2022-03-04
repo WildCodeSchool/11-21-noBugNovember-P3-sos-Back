@@ -39,6 +39,26 @@ router.post('/', (req, res) => {
   })
 })
 
+
+
+router.put("/:id", (req, res) => {
+  const sous_categorieId = req.params.id;
+  const sous_categoriePropsToUpdate = req.body;
+    mysql.query(
+    "UPDATE sous_categories SET ? WHERE id_sous_categorie = ?",
+    [sous_categoriePropsToUpdate, sous_categorieId],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error updating a sous_categorie");
+      } else {
+        res.status(200).send("sous_categories updated successfully 🎉");
+      }
+    }
+  )
+});
+
+
 router.delete('/:id', (req, res) => {
   const sousCatId = req.params.id
   mysql.query(
@@ -49,8 +69,9 @@ router.delete('/:id', (req, res) => {
         console.log(err)
         res.status(500).send('Error deleting a sous-categorie')
       } else {
-        if (result.affectedRows) res.status(200).send('🎉 SousCat deleted!')
-        else res.status(404).send('SousCat not found.')
+        if (result.affectedRows){
+          res.status(200).send('🎉 SousCat deleted!')
+        }else{ res.status(404).send('SousCat not found.')
       }
     }
   )
