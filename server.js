@@ -1,8 +1,10 @@
 //Dependences
 const cors = require('cors')
 const express = require('express')
+//import express from 'express'
 const morgan = require('morgan')
-const routes = require('./routes/index')
+// const routes = require('./routes/index')
+const {setupRoutes} = require('./routes')
 const connection = require('./config/db')
 
 require('dotenv').config()
@@ -28,12 +30,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 //routes
-app.use('/articles',routes.articles)
-app.use('/regions', routes.regions)
-app.use('/villes', routes.villes) 
-app.use('/secteurs',routes.secteurs) //BY BALROG
-app.use('/sousCategories',routes.sousCategories) //BY BALROG
-app.use('/categories', routes.categories)
+
+setupRoutes(app);
 
 app.get('/', (req, res) => {
   res.status(200).send('Yo !')
