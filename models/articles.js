@@ -67,8 +67,19 @@ const findMany = ({filters:{search, ville, categorie, sousCategorie}}) => {
 }
 
 
-
-
+// Create One 
+const create = ({titre,
+    intro,
+    para1,
+    lien1,
+    lien2,
+    lien3,
+    image,
+    visible,
+    user_id,
+    sous_categorie_id}) => {
+        
+    }
 module.exports = {
     validate,
     findMany,
