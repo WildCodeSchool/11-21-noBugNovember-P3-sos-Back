@@ -35,7 +35,6 @@ categoriesRouter.get('/:id', (req, res) => {
 
 // ADD ONE
 categoriesRouter.post('/', (req, res) => {
-    console.log(req.body,"2")
     let existingCategorie=null
     let validationErrors=null
     Categorie.findCat(req.body)
