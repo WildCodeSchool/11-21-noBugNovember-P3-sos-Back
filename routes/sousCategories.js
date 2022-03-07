@@ -74,6 +74,6 @@ router.delete('/:id', (req, res) => {
         }else{ res.status(404).send('SousCat not found.')
       }
     }
-  )
+    })
 })
 module.exports = router
