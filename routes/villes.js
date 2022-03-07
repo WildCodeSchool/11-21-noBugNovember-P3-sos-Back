@@ -41,7 +41,9 @@ villesRouter.post('/', (req,res)=>{
 let existingVille=null
 let validationErrors=null
 Ville.findVille(req.body)
+// console.log(req.body,"7")
   .then (ville => {
+    console.log(ville,"6")
      existingVille=ville
     if(existingVille) return Promise.reject('DUPLICATE_DATA')
     validationErrors = Ville.validate(req.body)

@@ -21,7 +21,7 @@ const validate = (data, forCreation = true) => {
 
 //READ ALL CITIES
 const findMany = ({filters: {regions,region}}) => {
-    let sql = 'SELECT * FROM villes '
+    let sql = 'SELECT * FROM villes'
     const sqlValues = []
 
     if(regions){
@@ -69,11 +69,12 @@ const findOne = id =>{
 //       .then(([results]) => results[0]);
 //   };
 //POST ONE
-const findVille =({nom_ville})=>{
-    console.log(nom_ville,"4")
-    const sql ='SELECT * FROM villes WHERE nom_ville =? '
-    return db.query(sql, [nom_ville])
-    .then(([result])=> result[0])
+const findVille =({nom_ville, region_id})=>{
+    console.log(nom_ville,region_id,"4")
+    const sql ='SELECT * FROM villes WHERE nom_ville =? AND region_id = ?'
+    return db.query(sql, [nom_ville, region_id])
+    .then(([results])=>  results[0])
+
 }
 const create = ({nom_ville,region_id}) => {
     console.log(nom_ville,region_id,"1")
