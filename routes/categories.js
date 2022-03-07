@@ -131,23 +131,6 @@ categoriesRouter.delete('/:id', (req, res) => {
 //     })
 // })
 
-// // Routes POST
 
-// router.post('/', (req, res) => {
-//     const { nom_categorie } = req.body
-//     sql = 'INSERT INTO categories (nom_categorie) VALUES (?);'
-    
-//     mysql.query(sql, [nom_categorie], (err, result) => {
-//         if (err) {
-//             res.status(500).send('Error saving categorie')
-//         } else {
-//             console.log(result)
-//             const id = result.insert
-//             const createdCategorie = { id, nom_categorie }
-//             res.status(201).json(createdCategorie)
 
-//         }
-//     })
-// })
-
-module.exports = categoriesRouter
+module.exports = router

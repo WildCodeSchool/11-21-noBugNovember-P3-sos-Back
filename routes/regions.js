@@ -156,7 +156,6 @@ regionsRouter.put('/:id', (req, res) => {
 //   })
 // })
 
-
 // DELETE ONE
 regionsRouter.delete('/:id', (req, res) => {
   Region.destroy(req.params.id)

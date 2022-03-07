@@ -1,6 +1,10 @@
 //Dependences
 const cors = require('cors')
 const express = require('express')
+<<<<<<< HEAD
+=======
+//import express from 'express'
+>>>>>>> 1d4b6fd0e8eba21bc05fb94c6a545b45faca73f1
 const morgan = require('morgan')
 // const routes = require('./routes/index')
 const {setupRoutes} = require('./routes')
