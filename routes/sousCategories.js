@@ -71,10 +71,9 @@ router.delete('/:id', (req, res) => {
       } else {
         if (result.affectedRows){
           res.status(200).send('🎉 SousCat deleted!')
-        }else{ 
-          res.status(404).send('SousCat not found.')
-        }
-      } 
-    } )
+        }else{ res.status(404).send('SousCat not found.')
+      }
+    }
+    })
 })
 module.exports = router
