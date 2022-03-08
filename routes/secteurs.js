@@ -4,17 +4,28 @@ const mysql = require('../config/db')
 
 
 // Routes GET
+// Routes GET
 router.get('/', (req, res) => {
-    const sql = 'SELECT * FROM secteurs'
-    mysql.query(sql, (err, result) => {
+  const sql = 'SELECT id_secteur, nom_secteur FROM secteurs'
+  //Rajout romain v
+  let secteur = []
+  
+  mysql.query(sql, (err, result) => {
     if (err) {
-        res.status(500).send('Error retrieving data from secteur')
-        console.error(err)
+      res.status(500).send('Error retrieving data from secteur')
+      console.error(err)
     } else {
-        console.table(result)
-        res.status(200).json(result)
+      result.forEach(la =>
+        sousCategorie.push({
+          id: la.id_sous_categorie,
+          value: la.nom_sous_categorie,
+          label: la.nom_sous_categorie
+        })
+      )
+      console.table(sousCategorie)
+      res.status(200).json(sousCategorie)
     }
-    })
+  })
 })
 
 // Routes POST
