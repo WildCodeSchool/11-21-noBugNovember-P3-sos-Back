@@ -46,6 +46,7 @@ router.post('/', (req, res) => {
   })
 })
 
+
 // Routes PUT
 
 router.put('/:id', (req, res) => {
@@ -59,7 +60,7 @@ router.put('/:id', (req, res) => {
         console.error(err)
         res.status(500).send('Error updating a ville')
       } else {
-        res.status(200).send('Ville updated successfully 🎉')
+        res.status(200).send('Ville updated successfully ')
       }
     }
   )
@@ -74,7 +75,7 @@ router.delete('/:id', (req, res) => {
     (err, result) => {
       if (err) {
         console.error(err)
-        res.status(500).send('😱 Error deleting an user')
+        res.status(500).send(' Error deleting an user')
       } else {
         res.sendStatus(204)
       }
@@ -83,3 +84,4 @@ router.delete('/:id', (req, res) => {
 })
 
 module.exports = router
+

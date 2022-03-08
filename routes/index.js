@@ -7,6 +7,7 @@ const villesRouter = require("./villes")
 const secteursRouter = require("./secteurs")
 const sousCategoriesRouter = require("./sousCategories") 
 const categoriesRouter = require("./categories")
+const telechargementsRouter = require("./telechargements")
 
 const setupRoutes = (app) => {
     app.use('/articles',articlesRouter)
@@ -18,6 +19,8 @@ const setupRoutes = (app) => {
     app.use('/secteurs',secteursRouter) 
     app.use('/sousCategories',sousCategoriesRouter)
     app.use('/categories', categoriesRouter)
+    app.use('/telechargements', telechargementsRouter)
+
 }
 
 
