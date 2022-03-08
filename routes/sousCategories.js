@@ -7,14 +7,24 @@ const mysql = require('../config/db')
 
 // Routes GET
 router.get('/', (req, res) => {
-  const sql = 'SELECT * FROM sous_categories'
+  const sql = 'SELECT id_sous_categorie, nom_sous_categorie FROM sous_categories'
+  //Rajout romain v
+  let sousCategorie = []
+  
   mysql.query(sql, (err, result) => {
     if (err) {
       res.status(500).send('Error retrieving data from sous_categorie')
       console.error(err)
     } else {
-      console.table(result)
-      res.status(200).json(result)
+      result.forEach(la =>
+        sousCategorie.push({
+          id: la.id_sous_categorie,
+          value: la.nom_sous_categorie,
+          label: la.nom_sous_categorie
+        })
+      )
+      console.table(sousCategorie)
+      res.status(200).json(sousCategorie)
     }
   })
 })

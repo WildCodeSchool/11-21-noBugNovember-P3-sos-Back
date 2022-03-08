@@ -8,14 +8,19 @@ router.get('/', (req, res) => {
   //Rajout romain v
   let ville = []
 
-  
   mysql.query(sql, (err, result) => {
     if (err) {
       res.status(500).send('Error retrieving data from villes')
       console.error(err)
     } else {
       //rajout romain v
-      result.forEach( la => ville.push({id : la.id_ville, value : la.nom_ville , label : la.nom_ville}))
+      result.forEach(la =>
+        ville.push({
+          id: la.id_ville,
+          value: la.nom_ville,
+          label: la.nom_ville
+        })
+      )
       // Le map du front s'est fait remplacé par le for EACH
       console.table(ville)
       res.status(200).json(ville)
@@ -43,41 +48,38 @@ router.post('/', (req, res) => {
 
 // Routes PUT
 
-router.put("/:id", (req, res) => {
-  const villeId = req.params.id;
-  const villePropsToUpdate = req.body;
-    mysql.query(
-    "UPDATE villes SET ? WHERE id_ville = ?",
+router.put('/:id', (req, res) => {
+  const villeId = req.params.id
+  const villePropsToUpdate = req.body
+  mysql.query(
+    'UPDATE villes SET ? WHERE id_ville = ?',
     [villePropsToUpdate, villeId],
     (err, result) => {
       if (err) {
-        console.error(err);
-        res.status(500).send("Error updating a ville");
+        console.error(err)
+        res.status(500).send('Error updating a ville')
       } else {
-        res.status(200).send("Ville updated successfully 🎉");
+        res.status(200).send('Ville updated successfully 🎉')
       }
     }
   )
-});
+})
 
-router.delete("/:id", (req, res) => {
-  const userId = req.params.id;
+router.delete('/:id', (req, res) => {
+  const userId = req.params.id
   console.log(userId)
   mysql.query(
-    "DELETE FROM villes WHERE id_ville = ?",
+    'DELETE FROM villes WHERE id_ville = ?',
     [userId],
     (err, result) => {
       if (err) {
-        console.error(err);
-        res.status(500).send("😱 Error deleting an user");
+        console.error(err)
+        res.status(500).send('😱 Error deleting an user')
       } else {
-        res.sendStatus(204);
+        res.sendStatus(204)
       }
     }
   )
-});
-
-
-
+})
 
 module.exports = router
