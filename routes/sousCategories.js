@@ -49,14 +49,14 @@ router.put("/:id", (req, res) => {
     [sous_categoriePropsToUpdate, sous_categorieId],
     (err, result) => {
       if (err) {
-        console.error(err);
-        res.status(500).send("Error updating a sous_categorie");
+        console.error(err)
+        res.status(500).send("Error updating a sous_categorie")
       } else {
-        res.status(200).send("sous_categories updated successfully 🎉");
+        res.status(200).send("sous_categories updated successfully 🎉")
       }
     }
   )
-});
+})
 
 
 router.delete('/:id', (req, res) => {
@@ -71,9 +71,10 @@ router.delete('/:id', (req, res) => {
       } else {
         if (result.affectedRows){
           res.status(200).send('🎉 SousCat deleted!')
-        }else{ res.status(404).send('SousCat not found.')
-      }
-    }
-  )
+        }else{ 
+          res.status(404).send('SousCat not found.')
+        }
+      } 
+    } )
 })
 module.exports = router
