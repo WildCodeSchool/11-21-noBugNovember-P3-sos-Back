@@ -1,6 +1,6 @@
 const express = require('express')
 
-const regionRouter = express.Router()
+const regionsRouter = express.Router()
 const Region = require('../models/regions')
 
 const mysql = require('../config/db')
@@ -24,7 +24,7 @@ const Joi = require('joi')
 // })
 
 //READ ALL
-regionRouter.get('/', (req, res) => {
+regionsRouter.get('/', (req, res) => {
   Region.findMany()
     .then(regions => {
       res.json(regions)
@@ -35,7 +35,7 @@ regionRouter.get('/', (req, res) => {
 })
 
 //READ ONE
-regionRouter.get('/:id', (req, res) => {
+regionsRouter.get('/:id', (req, res) => {
   Region.findOne(req.params.id)
     .then(region => {
       if (region) {
@@ -45,13 +45,13 @@ regionRouter.get('/:id', (req, res) => {
       }
     })
     .catch(err => {
-      res.status(500).send('Error retrieving movie from database')
+      res.status(500).send('Error retrieving Region from database')
     })
-})
+}) 
 
 // Routes POST
 
-// regionRouter.post('/', (req, res) => {
+// regionsRouter.post('/', (req, res) => {
 //   const { nom_region } = req.body
 //   sql = 'INSERT INTO regions (nom_region) VALUES (?);'
 
@@ -68,7 +68,7 @@ regionRouter.get('/:id', (req, res) => {
 // })
 
 // ADD ONE
-regionRouter.post('/', (req, res) => {
+regionsRouter.post('/', (req, res) => {
   const error = Region.validate(req.body)
   if (error) {
     res.status(422).json({ validation: error.details })
@@ -86,7 +86,7 @@ regionRouter.post('/', (req, res) => {
 
 // Routes PUT
 
-// regionRouter.put('/:id', (req, res) => {
+// regionsRouter.put('/:id', (req, res) => {
 //   const regionId = req.params.id
 //   const db = mysql.promise() //Utiliser les promesses
 //   let existingRegion = null //Variable pour check si existe
@@ -112,7 +112,7 @@ regionRouter.post('/', (req, res) => {
 // })
 
 // UPDATE ONE
-regionRouter.put('/:id', (req, res) => {
+regionsRouter.put('/:id', (req, res) => {
   let existingRegion = null
   let validationErrors = null
   Region.findOne(req.params.id)
@@ -140,7 +140,7 @@ regionRouter.put('/:id', (req, res) => {
 
 // Route Delete
 
-// regionRouter.delete('/:id', (req, res) => {
+// regionsRouter.delete('/:id', (req, res) => {
 //   const regionId = req.params.id
 //   const sql = 'DELETE FROM regions WHERE id_region=?'
 //   mysql.query(sql, [regionId], (err, result) => {
@@ -157,7 +157,7 @@ regionRouter.put('/:id', (req, res) => {
 // })
 
 // DELETE ONE
-regionRouter.delete('/:id', (req, res) => {
+regionsRouter.delete('/:id', (req, res) => {
   Region.destroy(req.params.id)
     .then(deleted => {
       if (deleted) {
@@ -172,4 +172,4 @@ regionRouter.delete('/:id', (req, res) => {
     })
 })
 
-module.exports = regionRouter
+module.exports = regionsRouter
