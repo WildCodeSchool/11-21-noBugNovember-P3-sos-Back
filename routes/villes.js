@@ -4,14 +4,21 @@ const mysql = require('../config/db')
 
 // Routes GET
 router.get('/', (req, res) => {
-  const sql = 'SELECT nom_ville FROM villes'
+  const sql = 'SELECT id_ville, nom_ville FROM villes'
+  //Rajout romain v
+  let ville = []
+
+  
   mysql.query(sql, (err, result) => {
     if (err) {
       res.status(500).send('Error retrieving data from villes')
       console.error(err)
     } else {
-      console.table(result)
-      res.status(200).json(result)
+      //rajout romain v
+      result.forEach( la => ville.push({id : la.id_ville, value : la.nom_ville , label : la.nom_ville}))
+      // Le map du front s'est fait remplacé par le for EACH
+      console.table(ville)
+      res.status(200).json(ville)
     }
   })
 })
@@ -33,6 +40,8 @@ router.post('/', (req, res) => {
     }
   })
 })
+
+// Routes PUT
 
 router.put("/:id", (req, res) => {
   const villeId = req.params.id;
