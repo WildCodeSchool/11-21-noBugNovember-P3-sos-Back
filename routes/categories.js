@@ -10,13 +10,20 @@ const mysql = require('../config/db')
 
 router.get('/', (req, res) => {
     const sql = 'SELECT * FROM categories'
+    const categorie=[]
     mysql.query(sql, (err, result) => {
         if (err) {
             res.status(500).send('Error retrieving data from categories')
             console.error(err)
         } else {
-            console.table(result)
-            res.status(200).json(result)
+            result.forEach(cat=>
+              categorie.push({
+                id:cat.id_categorie,
+                value:cat.nom_categorie,
+                label: cat.nom_categorie}))
+                
+            console.log(categorie)
+            res.status(200).json(categorie)
         }
     })
 })
