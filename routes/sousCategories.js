@@ -31,7 +31,6 @@ router.get('/', (req, res) => {
 
 
 // Routes POST
-
 router.post('/', (req, res) => {
   const { nom_sous_categorie, categorie_id } = req.body
   sql =

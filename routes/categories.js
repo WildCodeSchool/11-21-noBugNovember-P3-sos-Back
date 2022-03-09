@@ -2,20 +2,42 @@ const express = require('express')
 
 const categoriesRouter = express.Router()
 const Categorie = require('../models/categories')
+const mysql = require('../config/db')
 
+
+categoriesRouter.get('/', (req, res) => {
+    const sql = 'SELECT id_categorie,nom_categorie FROM categories'
+    const categorie=[]
+    mysql.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).send('Error retrieving data from categories')
+            console.error(err)
+        } else {
+            result.forEach(cat=>
+              categorie.push({
+                id:cat.id_categorie,
+                value:cat.nom_categorie,
+                label: cat.nom_categorie})
+                )
+                
+            console.log(categorie)
+            res.status(200).json(categorie)
+        }
+    })
+})
 
 
 
 //READ ALL
-categoriesRouter.get('/', (req, res) => {
-  Categorie.findMany()
-    .then(categories => {
-      res.json(categories)
-    })
-    .catch(err => {
-      res.status(500).send('Error retrieving categories from database')
-    })
-})
+// categoriesRouter.get('/', (req, res) => {
+//   Categorie.findMany()
+//     .then(categories => {
+//       res.json(categories)
+//     })
+//     .catch(err => {
+//       res.status(500).send('Error retrieving categories from database')
+//     })
+// })
 
 //READ ONE
 categoriesRouter.get('/:id', (req, res) => {
