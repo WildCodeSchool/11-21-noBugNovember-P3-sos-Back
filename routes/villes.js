@@ -1,21 +1,32 @@
 const express = require('express')
-
 const villesRouter = express.Router()
-const Ville = require('../models/villes')
+const villes = require('../models/villes')
+const mysql = require('../config/db')
 
-
-
-
-// READ ALL 
+// Routes GET
 villesRouter.get('/', (req, res) => {
-  const{regions,region}= (req.query)
-  // const{region}=req.query.id
-  Ville.findMany( {filters:{regions,region}})
-  .then( villes =>{
-    res.json(villes)
-  })
-  .catch(err => {
-    res.status(500).send('Error retrieving villes from database')
+  const sql = 'SELECT id_ville, nom_ville, region_id FROM villes'
+  //Rajout romain v
+  let ville = []
+
+  mysql.query(sql, (err, result) => {
+    if (err) {
+      res.status(500).send('Error retrieving data from villes')
+      console.error(err)
+    } else {
+      //rajout romain v
+      result.forEach(la =>
+        ville.push({
+          id: la.id_ville,
+          value: la.nom_ville,
+          label: la.nom_ville,
+          id_region:la.region_id
+        })
+      )
+      // Le map du front s'est fait remplacé par le for EACH
+      console.table(ville)
+      res.status(200).json(ville)
+    }
   })
 })
 
@@ -65,7 +76,6 @@ Ville.findVille(req.body)
     }
   })
 })
-
 
 //UPDATE ONE
 villesRouter.put('/:id',(req,res) =>{
