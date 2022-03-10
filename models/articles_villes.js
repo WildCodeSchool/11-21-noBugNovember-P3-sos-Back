@@ -35,20 +35,25 @@ const findOne = (id) => {
     .then(([results]) => results);
 };
 
+
+// Delete all 
+const destroy = (id) =>{
+  return db.query('DELETE FROM villes_has_articles WHERE article_id = ?', [id])
+  .then(([result]) => result.affectedRows !== 0);
+}
+
+
 // Update One
-const update = (article_id, newAttributes) => {
-
-  let lan = []
-  for (let i = 0; i < newAttributes.length; i++) {
-    lan.push([newAttributes[i],article_id ])
-  }
-
-  return db.query('UPDATE villes_has_articles SET ? WHERE article_id = ?', [newAttributes, article_id]);
+const update = (article_id, ville_id) => {
+  destroy(article_id).then(()=>{
+    return create(ville_id, article_id)
+  })
 };
 
 module.exports = {
   validate,
   create,
   findOne,
-  update
+  update,
+  destroy
 }
