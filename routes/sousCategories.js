@@ -1,14 +1,34 @@
 // INSERT INTO sous_categories (nom_sous_categorie, categorie_id)
 // VALUES (?, ?);
 
-const express = require('express');
-const Joi = require('Joi');
-const connection = require('../config/db');
-const sousCategoriesRouter = express.Router();
-const SousCategorie = require("../models/sousCategories") 
-const mysql = require('../config/db');
+const express = require('express')
+const Joi = require('Joi')
+const connection = require('../config/db')
+const sousCategoriesRouter = express.Router()
+const SousCategorie = require('../models/sousCategories')
+const mysql = require('../config/db')
 
-// Routes GET
+// // Routes GET
+// router.get('/', (req, res) => {
+//   const sql =
+//     'SELECT id_sous_categorie, nom_sous_categorie, nom_categorie FROM sous_categories LEFT JOIN categories ON id_categorie = categorie_id'
+//   //Rajout romain v
+//   let sousCategorie = []
+
+//   mysql.query(sql, (err, result) => {
+//     if (err) {
+//       res.status(500).send('Error retrieving data from sous_categorie')
+//       console.error(err)
+//     } else {
+//     }
+//   })
+// })
+
+// Routes POST
+// router.post('/', (req, res) => {
+//   const { nom_sous_categorie, categorie_id } = req.body
+//   sql =
+//     'INSERT INTO sous_categories (nom_sous_categorie, categorie_id) VALUES (?,?);'
 // router.get('/', (req, res) => {
 //   const sql = 'SELECT * FROM sous_categories'
 //   mysql.query(sql, (err, result) => {
@@ -24,9 +44,19 @@ const mysql = require('../config/db');
 
 //READ ALL
 sousCategoriesRouter.get('/', (req, res) => {
+  let sousCategorie = []
   SousCategorie.findMany()
-    .then(sousCategorie => {
-      res.json(sousCategorie)
+    .then(result => {
+      result.forEach(la =>
+        sousCategorie.push({
+          id: la.id_sous_categorie,
+          value: la.nom_sous_categorie,
+          label: la.nom_sous_categorie,
+          nomCat: la.nom_categorie
+        })
+      )
+      console.table(sousCategorie)
+      res.status(200).json(sousCategorie)
     })
     .catch(err => {
       res.status(500).send('Error retrieving sous-categories from database')
@@ -83,7 +113,7 @@ sousCategoriesRouter.get('/:id', (req, res) => {
 //         'INSERT INTO sous_categories (nom_sous_categorie, categorie_id) VALUES (?,?)',
 //         [nom_sous_categorie, categorie_id]
 //       );
-//     } ) 
+//     } )
 //     .then(([{insertId}]) => {
 //       res.status(201).json({ id: insertId, nom_sous_categorie, categorie_id});
 //     })
@@ -94,40 +124,39 @@ sousCategoriesRouter.get('/:id', (req, res) => {
 //       else if (err === 'INVALID_DATA')
 //           res.status(422).json({ validationErrors });
 //       else{console.log(err)
-//         res.status(500).send('Error saving this sous_cat')} 
+//         res.status(500).send('Error saving this sous_cat')}
 //     });
 // });
 
-sousCategoriesRouter.post('/', (req,res)=>{
-  let existingsousCat=null
-  let validationErrors=null
+sousCategoriesRouter.post('/', (req, res) => {
+  let existingsousCat = null
+  let validationErrors = null
   SousCategorie.findSousCat(req.body)
-  // console.log(req.body,"7")
-    .then (sousCat => {
+    // console.log(req.body,"7")
+    .then(sousCat => {
       // console.log(sousCat,"6")
-       existingsousCat=sousCat
-      if(existingsousCat) return Promise.reject('DUPLICATE_DATA')
+      existingsousCat = sousCat
+      if (existingsousCat) return Promise.reject('DUPLICATE_DATA')
       validationErrors = SousCategorie.validate(req.body)
-      if(validationErrors) return Promise.reject('INVALID_DATA')
+      if (validationErrors) return Promise.reject('INVALID_DATA')
       return SousCategorie.create(req.body)
     })
-    .then(createdsousCat =>{
+    .then(createdsousCat => {
       res.status(201).json(createdsousCat)
     })
     .catch(err => {
       console.error(err)
-      if (err === 'DUPLICATE_DATA'){
+      if (err === 'DUPLICATE_DATA') {
         res.status(409).send('sous-categorie already exist')
-      }else if (err === 'INVALID_DATA'){
+      } else if (err === 'INVALID_DATA') {
         res.status(422).json({
-          validationErrors : validationErrors.details })
-      }else{
+          validationErrors: validationErrors.details
+        })
+      } else {
         res.status(500).send('Error saving the sous-categorie')
       }
     })
-  })
-
-
+})
 
 // router.put("/:id", (req, res) => {
 //   const sous_categorieId = req.params.id;
@@ -184,7 +213,6 @@ sousCategoriesRouter.post('/', (req,res)=>{
 //     });
 // });
 
-
 // UPDATE ONE
 sousCategoriesRouter.put('/:id', (req, res) => {
   let existingsousCat = null
@@ -193,13 +221,15 @@ sousCategoriesRouter.put('/:id', (req, res) => {
 
   Promise.all([
     SousCategorie.findOne(req.params.id),
-    SousCategorie.findBySousCatWithDifferentId(req.body.nom_sous_categorie,req.params.id),
+    SousCategorie.findBySousCatWithDifferentId(
+      req.body.nom_sous_categorie,
+      req.params.id
+    )
   ])
     .then(([sousCat, otherWithDifferentId]) => {
       existingsousCat = sousCat
-      if (!existingsousCat) return Promise.reject
-      ('RECORD_NOT_FOUND')
-        if(otherWithDifferentId)return Promise.reject('DUPLICATE_DATA')
+      if (!existingsousCat) return Promise.reject('RECORD_NOT_FOUND')
+      if (otherWithDifferentId) return Promise.reject('DUPLICATE_DATA')
       validationErrors = SousCategorie.validate(req.body, false)
       if (validationErrors) return Promise.reject('INVALID_DATA')
       return SousCategorie.update(req.params.id, req.body)
@@ -210,24 +240,39 @@ sousCategoriesRouter.put('/:id', (req, res) => {
     .catch(err => {
       console.error(err)
       if (err === 'RECORD_NOT_FOUND') {
-        res.status(404).send(`Sous-categorie with id ${req.params.id} not found.`)
+        res
+          .status(404)
+          .send(`Sous-categorie with id ${req.params.id} not found.`)
       } else if (err === 'INVALID_DATA') {
         res.status(422).json({ validationErrors: validationErrors.details })
       } else if (err === 'DUPLICATE_DATA') {
-        console.log(req.body,"8")
+        console.log(req.body, '8')
         res.status(409).send('already exist')
-      }
-      else {
+      } else {
         res.status(500).send('Error updating a sous-categorie')
       }
     })
 })
 
+// router.put('/:id', (req, res) => {
+//   const sous_categorieId = req.params.id
+//   const sous_categoriePropsToUpdate = req.body
+//   mysql.query(
+//     'UPDATE sous_categories SET ? WHERE id_sous_categorie = ?',
+//     [sous_categoriePropsToUpdate, sous_categorieId],
+//     (err, result) => {
+//       if (err) {
+//         console.error(err)
+//         res.status(500).send('Error updating a sous_categorie')
+//       } else {
+//         res.status(200).send('sous_categories updated successfully 🎉')
+//       }
+//     }
+//   )
+// })
 
-
-
-sousCategoriesRouter.delete("/:id", (req, res) => {
-  const sous_categorieId = req.params.id;
+sousCategoriesRouter.delete('/:id', (req, res) => {
+  const sous_categorieId = req.params.id
   console.log(sous_categorieId)
   mysql.query(
     'DELETE FROM sous_categories WHERE id_sous_categorie=?',
@@ -237,13 +282,14 @@ sousCategoriesRouter.delete("/:id", (req, res) => {
         console.log(err)
         res.status(500).send('Error deleting a sous-categorie')
       } else {
-        if (result.affectedRows){
+        if (result.affectedRows) {
           res.status(200).send('🎉 SousCat deleted!')
-        }else{ res.status(404).send('SousCat not found.')
+        } else {
+          res.status(404).send('SousCat not found.')
+        }
       }
     }
-    })
-});
-
+  )
+})
 
 module.exports = sousCategoriesRouter

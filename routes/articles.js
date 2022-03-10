@@ -25,7 +25,7 @@ articlesRouter.get('/', (req, res) => {
 // Post One
 articlesRouter.post('/', (req, res) => {
   let idArticle = null
-  let  createdArtSecRes = null
+  let createdArtSecRes = null
   let createdArtcilesRes = null
   const {
     titre,
@@ -62,7 +62,7 @@ articlesRouter.post('/', (req, res) => {
 
   // if  (errorArt || errorArtSec || errorArtVille || errorArtSousCat){
   //   res.status(422).json( errorArt && { validationErrors: errorArt.details } || errorArtSec && { validationErrors: errorArtSec.details } || errorArtVille && { validationErrors: errorArtVille.details } || errorArtSousCat && { validationErrors: errorArtSousCat.details })
-  
+
   if (errorArt) {
     res.status(422).json({ validationErrors: errorArt.details })
   } else if (errorArtSec) {
@@ -87,21 +87,18 @@ articlesRouter.post('/', (req, res) => {
       .then(({ id, ...createdArticles }) => {
         console.log(id)
         idArticle = id
-        createdArtcilesRes=createdArticles
+        createdArtcilesRes = createdArticles
       })
-      .then(() =>  Promise.all([
-        secteur_id && ArticlesSecteurs.create(secteur_id, idArticle),
-        ArticlesSousCats.create(idArticle, sous_categorie_id),
-        ArticlesVilles.create(ville_id, idArticle)
-      ])
-      .then(([sec, sous, ville]) => {
-        res.status(201).json({createdArtcilesRes,sec,sous,ville})
-      })
-      
+      .then(() =>
+        Promise.all([
+          secteur_id && ArticlesSecteurs.create(secteur_id, idArticle),
+          ArticlesSousCats.create(idArticle, sous_categorie_id),
+          ArticlesVilles.create(ville_id, idArticle)
+        ]).then(([sec, sous, ville]) => {
+          res.status(201).json({ createdArtcilesRes, sec, sous, ville })
+        })
       )
   }
-
-  
 })
 
 module.exports = articlesRouter
