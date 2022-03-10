@@ -230,17 +230,19 @@ sousCategoriesRouter.delete("/:id", (req, res) => {
   const sous_categorieId = req.params.id;
   console.log(sous_categorieId)
   mysql.query(
-    "DELETE FROM sous_categories WHERE id_sous_categorie = ?",
-    [sous_categorieId],
+    'DELETE FROM sous_categories WHERE id_sous_categorie=?',
+    [sousCatId],
     (err, result) => {
       if (err) {
-        console.error(err);
-        res.status(500).send("😱 Error deleting an sous_categorie");
+        console.log(err)
+        res.status(500).send('Error deleting a sous-categorie')
       } else {
-        res.sendStatus(204);
+        if (result.affectedRows){
+          res.status(200).send('🎉 SousCat deleted!')
+        }else{ res.status(404).send('SousCat not found.')
       }
     }
-  )
+    })
 });
 
 
