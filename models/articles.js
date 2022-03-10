@@ -125,6 +125,10 @@ const create = ({
 const update = (id, newAttributes) => {
   return db.query('UPDATE articles SET ? WHERE id_article = ?', [newAttributes, id]);
 };
+// Delete One
+const destroy = (id, newAttributes) => {
+  return db.query('UPDATE articles SET ? WHERE id_article = ?', [newAttributes, id]);
+};
 
 module.exports = {
   validate,

@@ -26,7 +26,23 @@ const create = (secteur_id, article_id) => {
   })
 }
 
+// Delete all 
+const destroy = (id) =>{
+  return db.query('DELETE FROM secteurs_has_articles WHERE article_id = ?', [id])
+  .then(([result]) => result.affectedRows !== 0);
+}
+
+
+// Update One
+const update = (article_id, secteur_id) => {
+  destroy(article_id).then(()=>{
+    return create(secteur_id, article_id)
+  })
+};
+
 module.exports = {
   validate,
-  create
+  create,
+  destroy,
+  update
 }
