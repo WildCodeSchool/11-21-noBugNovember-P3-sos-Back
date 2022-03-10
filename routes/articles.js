@@ -22,6 +22,33 @@ articlesRouter.get('/', (req, res) => {
     })
 })
 
+// READ One Article
+articlesRouter.get('/:id', (req, res) => {
+
+  Articles.findOne(req.params.id)
+    .then(articles => {
+      res.status(200).json(articles)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).send('Error retrieving data from articles')
+    })
+})
+
+// READ One Article
+articlesRouter.get('/villes/:id', (req, res) => {
+
+  ArticlesVilles.findOne(req.params.id)
+    .then(articles => {
+      res.status(200).json(articles)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).send('Error retrieving data from articles')
+    })
+})
+
+
 // Post One
 articlesRouter.post('/', (req, res) => {
   let idArticle = null
@@ -99,6 +126,40 @@ articlesRouter.post('/', (req, res) => {
         })
       )
   }
+})
+
+// Put Articles 
+articlesRouter.put('/:id', (req,res) => {
+  const id = req.params.id
+  const{
+    articles,
+    villes,
+    sousCategories,
+    secteurs
+  } = req.body
+  // const articles = req.body.articles 
+  console.log(articles) 
+  let existingArticle = null
+  let errorArticle  = null
+  Articles.findOne(id)
+    .then((article)=> {
+      existingArticle=article;
+      if(!existingArticle) return Promise.reject('RECORD_NOT_FOUND');
+      validationArticle=Articles.validate(articles, false);
+      if (errorArticle) return Promise.reject('INVALID_DATA');
+      return Articles.update(id, articles)
+    })
+    .then(()=> {
+      res.status(200).json({existingArticle, ...articles})
+    })
+    .catch((err) => {
+      console.log(err);
+      if (err === 'RECORD_NOT_FOUND')
+      res.status(404).send(`Article with id ${id} not found.`);
+      else if (err === 'INVALID_DATA')
+        res.status(422).json({ validationErrors: validationArticle.details });
+      else res.status(500).send('Error updating an article.');
+    })
 })
 
 module.exports = articlesRouter
