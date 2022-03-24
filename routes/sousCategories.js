@@ -43,14 +43,15 @@ const mysql = require('../config/db')
 
 //READ ALL
 sousCategoriesRouter.get('/', (req, res) => {
+  const{categorie}=req.query
   let sousCategorie = []
-  SousCategorie.findMany()
-    .then(result => {
+  SousCategorie.findMany({filters:{categorie}}).then(result => {
       result.forEach(la =>
         sousCategorie.push({
           id: la.id_sous_categorie,
           value: la.nom_sous_categorie,
           label: la.nom_sous_categorie,
+          idCat:la.categorie_id,
           nomCat: la.nom_categorie
         })
       )
@@ -271,24 +272,18 @@ sousCategoriesRouter.put('/:id', (req, res) => {
 // })
 
 sousCategoriesRouter.delete('/:id', (req, res) => {
-  const sous_categorieId = req.params.id
-  console.log(sous_categorieId)
-  mysql.query(
-    'DELETE FROM sous_categories WHERE id_sous_categorie=?',
-    [sousCatId],
-    (err, result) => {
-      if (err) {
-        console.log(err)
-        res.status(500).send('Error deleting a sous-categorie')
+  SousCategorie.destroy(req.params.id)
+    .then(deleted => {
+      if (deleted) {
+        res.status(200).send('🎉 Sous Categorie deleted!')
       } else {
-        if (result.affectedRows) {
-          res.status(200).send('🎉 SousCat deleted!')
-        } else {
-          res.status(404).send('SousCat not found.')
-        }
+        res.status(404).send(`Sous Categorie with id ${req.params.id}not found`)
       }
-    }
-  )
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).send('Error deleting a sous categorie')
+    })
 })
 
 module.exports = sousCategoriesRouter

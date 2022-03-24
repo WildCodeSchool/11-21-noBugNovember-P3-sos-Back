@@ -1,5 +1,6 @@
 const connection = require('../config/db')
 const Joi = require('joi')
+const { listenerCount } = require('../config/db')
 
 const db = connection.promise()
 
@@ -12,17 +13,21 @@ const validate = (data, forCreation = true) => {
 }
 
 // READ ALL
-const findMany = () => {
-  return db
+const findMany = ({filters:{categorie}}) => {
+  const sqlValues=[]
+  let filter=''
+  if (categorie){
+    filter += 'WHERE categorie_id=?'
+    sqlValues.push(parseInt(categorie))}
+    let sql=`SELECT id_sous_categorie, nom_sous_categorie,categorie_id, nom_categorie FROM sous_categories LEFT JOIN categories ON id_categorie = categorie_id ${filter}`
+    return db
     .query(
-      'SELECT id_sous_categorie, nom_sous_categorie, nom_categorie FROM sous_categories LEFT JOIN categories ON id_categorie = categorie_id'
-    )
-    .then(([result]) => result)
+      sql,sqlValues).then(([result]) => result)
 }
 
 // READ ONE
 const findOne = id => {
-  const sql = 'SELECT * FROM sous_categories WHERE id_sous_categorie = ?'
+  let sql = 'SELECT * FROM sous_categories WHERE id_sous_categorie = ?'
   return db.query(sql, [id]).then(([result]) => result[0])
 }
 

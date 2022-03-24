@@ -11,10 +11,13 @@ const ArticlesVilles = require('../models/articles_villes')
 // READ ALL With FILTERS
 articlesRouter.get('/', (req, res) => {
   const { search, ville, categorie, sousCategorie } = req.query
-
+  const tab = []
   Articles.findMany({ filters: { search, ville, categorie, sousCategorie } })
     .then(articles => {
-      res.status(200).json(articles)
+      articles.forEach(article =>
+        tab.push({ value: article.titre, ...article })
+      )
+      res.status(200).json(tab)
     })
     .catch(err => {
       console.error(err)
@@ -153,7 +156,7 @@ articlesRouter.put('/:id', (req, res) => {
       secteur_id && ArticlesSecteurs.update(id,secteur_id)
     ])
     )
-    .then(([resArt, resVilles, resSousCat,resSect]) => {
+    .then(([resArt, resVilles, resSousCat, resSect]) => {
       // res.status(200).json({ existingArticle, resArt, resVilles, resSousCat,resSect})
       res.sendStatus(204)
     })
@@ -167,7 +170,21 @@ articlesRouter.put('/:id', (req, res) => {
     })
 })
 
-
+//DELETE ONE
+articlesRouter.delete('/:id', (req, res) => {
+  Articles.destroy(req.params.id)
+    .then(deleted => {
+      if (deleted) {
+        res.status(200).send('🎉 Article deleted!')
+      } else {
+        res.status(404).send(`Article with id ${req.params.id}not found`)
+      }
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).send('Error deleting an article')
+    })
+})
 
 //Exemple pour le put, données à envoyer du front
 /*
