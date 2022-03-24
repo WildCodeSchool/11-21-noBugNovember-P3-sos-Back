@@ -128,9 +128,15 @@ articlesRouter.post('/', (req, res) => {
 // Put Articles
 articlesRouter.put('/:id', (req, res) => {
   const id = req.params.id
-  const { articles, villes, sousCategories, secteurs } = req.body
+  // const { articles, villes, sousCategories, secteurs } = req.body
   // const articles = req.body.articles
-  
+  const {
+    secteur_id,
+    sous_categorie_id,
+    ville_id,
+    ...articles
+  } = req.body
+
   let existingArticle = null
   let errorArticle = null
   Articles.findOne(id)
@@ -142,9 +148,9 @@ articlesRouter.put('/:id', (req, res) => {
         }).then(()=>
     Promise.all([
       Articles.update(id, articles),
-      villes && ArticlesVilles.update(  id,villes.ville_id),
-      sousCategories && ArticlesSousCats.update(id,sousCategories.sous_categorie_id),
-      secteurs && ArticlesSecteurs.update(id,secteurs.secteur_id)
+      ville_id && ArticlesVilles.update(  id,ville_id),
+      sous_categorie_id && ArticlesSousCats.update(id,sous_categorie_id),
+      secteur_id && ArticlesSecteurs.update(id,secteur_id)
     ])
     )
     .then(([resArt, resVilles, resSousCat,resSect]) => {

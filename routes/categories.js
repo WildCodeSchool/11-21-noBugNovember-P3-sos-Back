@@ -18,8 +18,7 @@ categoriesRouter.get('/', (req, res) => {
                 id:cat.id_categorie,
                 value:cat.nom_categorie,
                 label: cat.nom_categorie})
-                )
-                
+                )  
             console.log(categorie)
             res.status(200).json(categorie)
         }
