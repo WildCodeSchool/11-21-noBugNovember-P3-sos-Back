@@ -22,38 +22,19 @@ const Region = require('../models/regions')
 
 
 
-
-/***************************** AJOUT DE REGION NE MARCHE PAS ******** */
-// regionsRouter.get('/', (req, res) => {
-//     Region.findMany()
-
-//   const sql = 'SELECT id_region,nom_region FROM region'
-//   const region=[]
-//   mysql.query(sql, (err, result) => {
-//       if (err) {
-//           res.status(500).send('Error retrieving data from regions')
-//           console.error(err)
-//       } else {
-//           result.forEach(region=>
-//             region.push({
-//               id:region.id_region,
-//               value:region.nom_region,
-//               label: region.nom_region})
-//               )
-//           console.log(region)
-//           res.status(200).json(region)
-//       }
-//   })
-// })
-/***************************** NE MARCHE PAS ******** */
-
-
-
 //READ ALL
 regionsRouter.get('/', (req, res) => {
+  const listeRegions = []
   Region.findMany()
     .then(regions => {
-      res.json(regions)
+      regions.forEach(region =>
+        listeRegions.push({
+          id: region.id_region,
+          value: region.nom_region,
+          label: region.nom_region
+        })
+      )
+      res.json(listeRegions)
     })
     .catch(err => {
       res.status(500).send('Error retrieving regions from database')
