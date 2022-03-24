@@ -12,7 +12,7 @@ const validate = (data, forCreation = true) => {
 
 // READ ALL
 const findMany = () => {
-    return db.query('SELECT * FROM categories').then(([result]) => result)
+  return db.query('SELECT * FROM categories').then(([result]) => result)
 }
 
 // READ ONE
@@ -22,10 +22,9 @@ const findOne = id => {
 }
 
 // POST ONE
-const findCat =({nom_categorie})=>{
-    const sql ='SELECT * FROM categories WHERE nom_categorie =? '
-    return db.query(sql, [nom_categorie])
-    .then(([result])=> result[0])
+const findCat = ({ nom_categorie }) => {
+  const sql = 'SELECT * FROM categories WHERE nom_categorie =? '
+  return db.query(sql, [nom_categorie]).then(([result]) => result[0])
 }
 const create = ({ nom_categorie }) => {
   const sql = 'INSERT INTO categories (nom_categorie) VALUES (?)'
