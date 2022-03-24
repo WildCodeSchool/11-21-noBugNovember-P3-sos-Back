@@ -27,7 +27,6 @@ const findCat =({nom_categorie})=>{
     return db.query(sql, [nom_categorie])
     .then(([result])=> result[0])
 }
-
 const create = ({ nom_categorie }) => {
   const sql = 'INSERT INTO categories (nom_categorie) VALUES (?)'
 
