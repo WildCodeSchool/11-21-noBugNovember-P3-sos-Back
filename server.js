@@ -11,7 +11,7 @@ require('dotenv').config()
 
 //Variables
 const app = express()
-const port = process.env.PORT || 3030
+const port = process.env.PORT || 4242
 
 
 //connection test Mysql
@@ -38,5 +38,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Server listing on http://localhost:${port}`)
+  console.log(`Server listing on http://localhost${port}`)
 })

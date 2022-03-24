@@ -44,14 +44,15 @@ const mysql = require('../config/db')
 
 //READ ALL
 sousCategoriesRouter.get('/', (req, res) => {
+  const{categorie}=req.query
   let sousCategorie = []
-  SousCategorie.findMany()
-    .then(result => {
+  SousCategorie.findMany({filters:{categorie}}).then(result => {
       result.forEach(la =>
         sousCategorie.push({
           id: la.id_sous_categorie,
           value: la.nom_sous_categorie,
           label: la.nom_sous_categorie,
+          idCat:la.categorie_id,
           nomCat: la.nom_categorie
         })
       )
