@@ -25,15 +25,6 @@ const findMany = ({ filters: { regions, region } }) => {
     'SELECT * FROM villes INNER JOIN regions reg on villes.region_id = reg.id_region'
   const sqlValues = []
 
-  //   if (regions) {
-  //     sql += 'vil INNER JOIN regions reg on vil.region_id = reg.id_region'
-  //     sqlValues.push(regions)
-  //   }
-  //   if (region) {
-  //     if (regions) sql += 'WHERE region_id = ?'
-  //     else sql += 'WHERE region_id = ?'
-  //     sqlValues.push(region)
-  //   }
   return db.query(sql, sqlValues).then(([results]) => results)
 }
 
