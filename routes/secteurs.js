@@ -1,6 +1,4 @@
 const express = require('express')
-const Joi = require('Joi')
-const connection = require('../config/db')
 const secteursRouter = express.Router()
 const Secteur = require('../models/secteurs')
 const mysql = require('../config/db')
