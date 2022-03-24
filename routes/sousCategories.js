@@ -2,7 +2,6 @@
 // VALUES (?, ?);
 
 const express = require('express')
-const Joi = require('Joi')
 const connection = require('../config/db')
 const sousCategoriesRouter = express.Router()
 const SousCategorie = require('../models/sousCategories')

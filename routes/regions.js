@@ -3,8 +3,6 @@ const express = require('express')
 const regionsRouter = express.Router()
 const Region = require('../models/regions')
 
-const mysql = require('../config/db')
-const Joi = require('joi')
 
 // router.get('/', (req,res) => {
 //     res.status(200).send("Dans régions")
