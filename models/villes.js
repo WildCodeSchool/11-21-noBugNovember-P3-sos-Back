@@ -19,14 +19,27 @@ const validate = (data, forCreation = true) => {
   }).validate(data, { abortEarly: false }).error
 }
 
-//READ ALL CITIES
-const findMany = ({ filters: { regions, region } }) => {
-  let sql =
-    'SELECT * FROM villes INNER JOIN regions reg on villes.region_id = reg.id_region'
+// READ ALL
+const findMany = ({ filters: { region } }) => {
   const sqlValues = []
-
-  return db.query(sql, sqlValues).then(([results]) => results)
+  let filter = ''
+  if (region) {
+    filter += 'WHERE region_id=?'
+    sqlValues.push(parseInt(region))
+  }
+  let sql = `SELECT id_ville, nom_ville,region_id, nom_region FROM villes LEFT JOIN regions ON id_region = region_id ${filter}`
+  return db
+  .query(sql, sqlValues)
+  .then(([result]) => result)
 }
+
+//READ ALL CITIES     === MIS DE COTE ***
+// const findMany = ({ filters: { regions, region } }) => {
+//   let sql =
+//     'SELECT * FROM villes INNER JOIN regions reg on villes.region_id = reg.id_region'
+//   const sqlValues = []
+
+//   return db.query(sql, sqlValues).then(([results]) => results)} /********* FIN MIS DE COTE  */
 
 //READ ALL CITIES AND REGIONS
 // const findMany2 = () => {
@@ -59,14 +72,15 @@ const findOne = id => {
 //       .query('SELECT * FROM users WHERE email = ? AND id <> ?', [email, id])
 //       .then(([results]) => results[0]);
 //   };
+
 //POST ONE
 const findVille = ({ nom_ville, region_id }) => {
   console.log(nom_ville, region_id, '4')
   const sql = 'SELECT * FROM villes WHERE nom_ville =? AND region_id = ?'
   return db.query(sql, [nom_ville, region_id]).then(([results]) => results[0])
 }
+
 const create = ({ nom_ville, region_id }) => {
-  console.log(nom_ville, region_id, '1')
   const sql = 'INSERT INTO villes (nom_ville, region_id) VALUES (?,?)'
   return db.query(sql, [nom_ville, region_id]).then(([result]) => {
     console.log(result, '3')
@@ -79,6 +93,15 @@ const create = ({ nom_ville, region_id }) => {
 const update = (id, newAttributes) => {
   return db.query('UPDATE villes SET ? WHERE id_ville= ?', [newAttributes, id])
 }
+
+// const findByVillesWithDifferentId = (villes, id) => {
+//   return db
+//     .query('SELECT * FROM villes WHERE nom_villes = ? AND id_villes <> ?', [
+//       villes,
+//       id
+//     ])
+//     .then(([result]) => result[0])
+// }
 
 //UPDATE ONE BY REGION
 // const update2 = (id, newAttributes) => {
@@ -99,4 +122,5 @@ module.exports = {
   create,
   update,
   destroy
+  // findByVillesWithDifferentId
 }

@@ -12,7 +12,7 @@ const validate = (data, forCreation = true) => {
 
 // READ ALL
 const findMany = () => {
-    return db.query('SELECT * FROM regions').then(([result]) => result)
+  return db.query('SELECT * FROM regions').then(([result]) => result)
 }
 
 // READ ONE
@@ -22,6 +22,10 @@ const findOne = id => {
 }
 
 // POST ONE
+const findRegion = ({ nom_region }) => {
+  const sql = 'SELECT * FROM regions WHERE nom_region =? '
+  return db.query(sql, [nom_region]).then(([result]) => result[0])
+}
 const create = ({ nom_region }) => {
   const sql = 'INSERT INTO regions (nom_region) VALUES (?)'
 
@@ -50,6 +54,7 @@ module.exports = {
   validate,
   findMany,
   findOne,
+  findRegion,
   create,
   update,
   destroy

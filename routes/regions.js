@@ -3,7 +3,6 @@ const express = require('express')
 const regionsRouter = express.Router()
 const Region = require('../models/regions')
 
-
 // router.get('/', (req,res) => {
 //     res.status(200).send("Dans régions")
 // })
@@ -21,11 +20,21 @@ const Region = require('../models/regions')
 //   })
 // })
 
+
+
 //READ ALL
 regionsRouter.get('/', (req, res) => {
+  const listeRegions = []
   Region.findMany()
     .then(regions => {
-      res.json(regions)
+      regions.forEach(region =>
+        listeRegions.push({
+          id: region.id_region,
+          value: region.nom_region,
+          label: region.nom_region
+        })
+      )
+      res.json(listeRegions)
     })
     .catch(err => {
       res.status(500).send('Error retrieving regions from database')
@@ -45,7 +54,7 @@ regionsRouter.get('/:id', (req, res) => {
     .catch(err => {
       res.status(500).send('Error retrieving Region from database')
     })
-}) 
+})
 
 // Routes POST
 
