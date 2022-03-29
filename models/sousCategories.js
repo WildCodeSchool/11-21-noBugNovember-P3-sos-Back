@@ -18,11 +18,12 @@ const findMany = ({filters:{categorie}}) => {
   let filter=''
   if (categorie){
     filter += 'WHERE categorie_id=?'
-    sqlValues.push(parseInt(categorie))}
+    sqlValues.push(parseInt(categorie))
+  }
     let sql=`SELECT id_sous_categorie, nom_sous_categorie,categorie_id, nom_categorie FROM sous_categories LEFT JOIN categories ON id_categorie = categorie_id ${filter}`
     return db
-    .query(
-      sql,sqlValues).then(([result]) => result)
+    .query(sql,sqlValues)
+    .then(([result]) => result)
 }
 
 // READ ONE
@@ -39,11 +40,13 @@ const findSousCat = ({ nom_sous_categorie, categorie_id }) => {
     .query(sql, [nom_sous_categorie, categorie_id])
     .then(([results]) => results[0])
 }
+
 const create = ({ nom_sous_categorie, categorie_id }) => {
   const sql =
     'INSERT INTO sous_categories (nom_sous_categorie, categorie_id) VALUES (?,?)'
-
-  return db.query(sql, [nom_sous_categorie, categorie_id]).then(([result]) => {
+  return db
+  .query(sql, [nom_sous_categorie, categorie_id])
+  .then(([result]) => {
     const id = result.insertId
     return { id, nom_sous_categorie, categorie_id }
   })
