@@ -22,10 +22,28 @@ const Region = require('../models/regions')
 // })
 
 //READ ALL
+// regionsRouter.get('/', (req, res) => {
+//   Region.findMany()
+//     .then(regions => {
+//       res.json(regions)
+//     })
+//     .catch(err => {
+//       res.status(500).send('Error retrieving regions from database')
+//     })
+// })
+
 regionsRouter.get('/', (req, res) => {
+  const listeRegions = []
   Region.findMany()
     .then(regions => {
-      res.json(regions)
+      regions.forEach(region =>
+        listeRegions.push({
+          id: region.id_region,
+          value: region.nom_region,
+          label: region.nom_region
+        })
+      )
+      res.json(listeRegions)
     })
     .catch(err => {
       res.status(500).send('Error retrieving regions from database')
