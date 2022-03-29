@@ -133,12 +133,9 @@ articlesRouter.put('/:id', (req, res) => {
   const id = req.params.id
   // const { articles, villes, sousCategories, secteurs } = req.body
   // const articles = req.body.articles
-  const {
-    secteur_id,
-    sous_categorie_id,
-    ville_id,
-    ...articles
-  } = req.body
+  const { secteur_id, sous_categorie_id, ville_id, ...articles } = req.body
+
+  console.log(req.body)
 
   let existingArticle = null
   let errorArticle = null
@@ -148,13 +145,14 @@ articlesRouter.put('/:id', (req, res) => {
       if (!existingArticle) return Promise.reject('RECORD_NOT_FOUND')
       errorArticle = Articles.validate(articles, false)
       if (errorArticle) return Promise.reject('INVALID_DATA')
-        }).then(()=>
-    Promise.all([
-      Articles.update(id, articles),
-      ville_id && ArticlesVilles.update(  id,ville_id),
-      sous_categorie_id && ArticlesSousCats.update(id,sous_categorie_id),
-      secteur_id && ArticlesSecteurs.update(id,secteur_id)
-    ])
+    })
+    .then(() =>
+      Promise.all([
+        Articles.update(id, articles),
+        ville_id && ArticlesVilles.update(id, ville_id),
+        sous_categorie_id && ArticlesSousCats.update(id, sous_categorie_id),
+        secteur_id && ArticlesSecteurs.update(id, secteur_id)
+      ])
     )
     .then(([resArt, resVilles, resSousCat, resSect]) => {
       // res.status(200).json({ existingArticle, resArt, resVilles, resSousCat,resSect})
