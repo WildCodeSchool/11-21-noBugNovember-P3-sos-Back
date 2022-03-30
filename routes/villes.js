@@ -1,24 +1,8 @@
 const express = require('express')
+
 const villesRouter = express.Router()
 const Ville = require('../models/villes')
-const mysql = require('../config/db')
 
-// // Routes GET
-// villesRouter.get('/', (req, res) => {
-//   const sql = 'SELECT id_ville, nom_ville, region_id FROM villes'
-//   //Rajout romain v
-//   let ville = []
-
-//   mysql.query(sql, (err, result) => {
-//     if (err) {
-//       res.status(500).send('Error retrieving data from villes')
-//       console.error(err)
-//     } else {
-//       //rajout romain v
-//       // Le map du front s'est fait remplacé par le for EACH
-//     }
-//   })
-// })
 
 // READ ALL
 villesRouter.get('/', (req, res) => {
@@ -36,7 +20,6 @@ villesRouter.get('/', (req, res) => {
           nom_region: la.nom_region
         })
       )
-      console.table(ville)
       res.status(200).json(ville)
     })
     .catch(err => {
@@ -61,13 +44,10 @@ villesRouter.get('/:id', (req, res) => {
 
 //ADD ONE
 villesRouter.post('/', (req, res) => {
-  console.log(req.body, '2')
   let existingVille = null
   let validationErrors = null
   Ville.findVille(req.body)
-    // console.log(req.body,"7")
     .then(ville => {
-      console.log(ville, '6')
       existingVille = ville
       if (existingVille) return Promise.reject('DUPLICATE_DATA')
       validationErrors = Ville.validate(req.body)

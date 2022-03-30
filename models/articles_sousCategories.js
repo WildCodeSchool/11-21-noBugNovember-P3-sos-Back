@@ -26,19 +26,7 @@ const create = (article_id, sous_categorie_id) => {
   })
 }
 
-// const create = (secteur_id, article_id) => {
-//   const sql =
-//     'INSERT INTO secteurs_has_articles (secteur_id, article_id) VALUES ?'
 
-//   let lan = []
-//   for (let i = 0; i < secteur_id.length; i++) {
-//     lan.push([secteur_id[i], article_id])
-//   }
-
-//   return db.query(sql, [lan]).then(([result]) => {
-//     return { secteur_id, article_id }
-//   })
-// }
 // Delete all 
 const destroy = (id) =>{
   return db.query('DELETE FROM articles_has_sous_categories WHERE article_id = ?', [id])

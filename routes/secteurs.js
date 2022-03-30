@@ -1,21 +1,10 @@
 const express = require('express')
-const secteursRouter = express.Router()
-const Secteur = require('../models/secteurs')
 const mysql = require('../config/db')
 
-// Routes GET
-// router.get('/', (req, res) => {
-//     const sql = 'SELECT * FROM secteurs'
-//     mysql.query(sql, (err, result) => {
-//     if (err) {
-//         res.status(500).send('Error retrieving data from secteur')
-//         console.error(err)
-//     } else {
-//         console.table(result)
-//         res.status(200).json(result)
-//     }
-//     })
-// })
+const secteursRouter = express.Router()
+const Secteur = require('../models/secteurs')
+
+
 
 //READ ALL
 secteursRouter.get('/', (req, res) => {
@@ -29,7 +18,6 @@ secteursRouter.get('/', (req, res) => {
           label: la.nom_secteur
         })
       )
-      console.table(secteur)
       res.status(200).json(secteur)
     })
     .catch(err => {
@@ -52,32 +40,13 @@ secteursRouter.get('/:id', (req, res) => {
     })
 })
 
-// Routes POST
 
-// router.post('/', (req, res) => {
-//     const { nom_secteur } = req.body
-//     sql = 'INSERT INTO secteurs (nom_secteur) VALUES (?);'
-
-//     mysql.query(sql, [nom_secteur], (err, result) => {
-//       if (err) {
-//         res.status(500).send('Error saving secteur')
-//       } else {
-//         console.log(result)
-//         const id = result.insertId
-//         const createdSecteur = { id, nom_secteur }
-//         res.status(200).json(createdSecteur)
-//         //
-//       }
-//     })
-//   })
-
+// ADD ONE
 secteursRouter.post('/', (req, res) => {
   let existingsecteur = null
   let validationErrors = null
   Secteur.findSecteur(req.body)
-    // console.log(req.body,"7")
     .then(secteur => {
-      // console.log(sousCat,"6")
       existingsecteur = secteur
       if (existingsecteur) return Promise.reject('DUPLICATE_DATA')
       validationErrors = Secteur.validate(req.body)
@@ -101,28 +70,10 @@ secteursRouter.post('/', (req, res) => {
     })
 })
 
-// router.put("/:id", (req, res) => {
-//   const secteurId = req.params.id;
-//   const secteurPropsToUpdate = req.body;
-//     mysql.query(
-//     "UPDATE secteurs SET ? WHERE id_secteur = ?",
-//     [secteurPropsToUpdate, secteurId],
-//     (err, result) => {
-//       if (err) {
-//         console.error(err);
-//         res.status(500).send("Error updating a secteur");
-//       } else {
-//         res.status(200).send("secteur updated successfully 🎉");
-//       }
-//     }
-//   )
-// });
-
 // UPDATE ONE
 secteursRouter.put('/:id', (req, res) => {
   let existingsecteur = null
   let validationErrors = null
-  let duplicateErrors = null
 
   Promise.all([
     Secteur.findOne(req.params.id),
@@ -146,7 +97,6 @@ secteursRouter.put('/:id', (req, res) => {
       } else if (err === 'INVALID_DATA') {
         res.status(422).json({ validationErrors: validationErrors.details })
       } else if (err === 'DUPLICATE_DATA') {
-        console.log(req.body, '8')
         res.status(409).send('already exist')
       } else {
         res.status(500).send('Error updating a secteur')
@@ -156,7 +106,6 @@ secteursRouter.put('/:id', (req, res) => {
 
 secteursRouter.delete('/:id', (req, res) => {
   const secteurId = req.params.id
-  console.log(secteurId)
   mysql.query(
     'DELETE FROM secteurs WHERE id_secteur = ?',
     [secteurId],
