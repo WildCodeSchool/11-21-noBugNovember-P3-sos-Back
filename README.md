@@ -9,7 +9,7 @@ Ce projet a était créé avec [Create React App](https://github.com/facebook/cr
 <br>
 ▶ Enfin utilisez la commande ```npm start``` pour lancer le projet en local.
 
-Veillez à ce que le serveur Backend tourne également sur votre machine que vous pouvez récupérer juste [ici](https://github.com/WildCodeSchool/11-21-noBugNovember-P3-sos-front)
+Veillez à ce que le serveur Frontend tourne également sur votre machine que vous pouvez récupérer juste [ici](https://github.com/WildCodeSchool/11-21-noBugNovember-P3-sos-front)
 
 ## 📝 Description :
 Création d'un site internet proposant un accompagnement à la création de projet professionnel.
