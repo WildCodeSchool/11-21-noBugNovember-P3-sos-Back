@@ -11,7 +11,16 @@ const validate = (data, forCreation = true) => {
   }).validate(data, { abortEarly: false }).error
 }
 
-// Create One
+
+
+//Find One by Secteur
+const findOneSousCat = (id) => {
+  return db
+    .query('SELECT nom_sous_categorie FROM articles_has_sous_categories inner join sous_categories on sous_categorie_id = id_sous_categorie WHERE article_id = ?', [id])
+    .then(([results]) => results);
+};
+
+
 // POST ONE
 const create = (article_id, sous_categorie_id) => {
   const sql =
@@ -26,19 +35,7 @@ const create = (article_id, sous_categorie_id) => {
   })
 }
 
-// const create = (secteur_id, article_id) => {
-//   const sql =
-//     'INSERT INTO secteurs_has_articles (secteur_id, article_id) VALUES ?'
 
-//   let lan = []
-//   for (let i = 0; i < secteur_id.length; i++) {
-//     lan.push([secteur_id[i], article_id])
-//   }
-
-//   return db.query(sql, [lan]).then(([result]) => {
-//     return { secteur_id, article_id }
-//   })
-// }
 // Delete all 
 const destroy = (id) =>{
   return db.query('DELETE FROM articles_has_sous_categories WHERE article_id = ?', [id])
@@ -57,5 +54,6 @@ module.exports = {
   validate,
   create,
   update,
-  destroy
+  destroy,
+  findOneSousCat
 }

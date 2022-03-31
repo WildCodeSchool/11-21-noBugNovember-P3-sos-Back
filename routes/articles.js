@@ -1,6 +1,4 @@
 const express = require('express')
-const app = express()
-const mysql = require('../config/db')
 
 const articlesRouter = express.Router()
 const Articles = require('../models/articles')
@@ -37,9 +35,57 @@ articlesRouter.get('/:id', (req, res) => {
     })
 })
 
-// READ One Article
+// READ One Article dans une ville
 articlesRouter.get('/villes/:id', (req, res) => {
-  ArticlesVilles.findOne(req.params.id)
+  const tab =[]
+  ArticlesVilles.findOneVille(req.params.id)
+    .then(articles => {
+      articles.forEach(el => tab.push(el.nom_ville))
+
+      res.status(200).json(tab.join(", "))
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).send('Error retrieving data from articles')
+    })
+})
+
+
+// READ One Article dans un secteur
+articlesRouter.get('/secteurs/:id', (req, res) => {
+  const tab =[]
+  ArticlesSecteurs.findOneSecteur(req.params.id)
+    .then(articles => {
+      articles.forEach(el => tab.push(el.nom_secteur))
+
+      res.status(200).json(tab.join(", "))
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).send('Error retrieving data from articles')
+    })
+})
+
+
+// READ One Article dans une ville
+articlesRouter.get('/sousCat/:id', (req, res) => {
+  const tab =[]
+  ArticlesSousCats.findOneSousCat(req.params.id)
+    .then(articles => {
+      articles.forEach(el => tab.push(el.nom_sous_categorie))
+
+      res.status(200).json(tab.join(", "))
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).send('Error retrieving data from articles')
+    })
+})
+
+// READ One Article avec details
+articlesRouter.get('/details/:id', (req, res) => {
+  console.log(req.params.id)
+  Articles.findOneDetail(req.params.id)
     .then(articles => {
       res.status(200).json(articles)
     })
@@ -87,8 +133,6 @@ articlesRouter.post('/', (req, res) => {
   const errorArtVille = ArticlesVilles.validate({ ville_id })
   const errorArtSousCat = ArticlesSousCats.validate({ sous_categorie_id })
 
-  // if  (errorArt || errorArtSec || errorArtVille || errorArtSousCat){
-  //   res.status(422).json( errorArt && { validationErrors: errorArt.details } || errorArtSec && { validationErrors: errorArtSec.details } || errorArtVille && { validationErrors: errorArtVille.details } || errorArtSousCat && { validationErrors: errorArtSousCat.details })
 
   if (errorArt) {
     res.status(422).json({ validationErrors: errorArt.details })
@@ -112,7 +156,6 @@ articlesRouter.post('/', (req, res) => {
       user_id
     })
       .then(({ id, ...createdArticles }) => {
-        console.log(id)
         idArticle = id
         createdArtcilesRes = createdArticles
       })
@@ -131,11 +174,9 @@ articlesRouter.post('/', (req, res) => {
 // Put Articles
 articlesRouter.put('/:id', (req, res) => {
   const id = req.params.id
-  // const { articles, villes, sousCategories, secteurs } = req.body
-  // const articles = req.body.articles
+
   const { secteur_id, sous_categorie_id, ville_id, ...articles } = req.body
 
-  console.log(req.body)
 
   let existingArticle = null
   let errorArticle = null
@@ -184,21 +225,5 @@ articlesRouter.delete('/:id', (req, res) => {
     })
 })
 
-//Exemple pour le put, données à envoyer du front
-/*
-{"articles":{
-  "titre": "Réseagngnutage sur Grenoble ! \n",
-  "intro": "Pour te donner plus envie encore de te lancegngngr dans un projet de création d’entreprise, consulte l’agenda de OZER et fais-toi inviter à un Apéro’Ozer ! Rencontres, échanges, témoignages, réseau…Fonce ! ",
-  "para1": "Les actions de Pépite oZer s’articulent autour de plusieurs axes majeurs. Pépite oZer a pour mission à la fois la sensibilisation mais également l’accompagnement des étudiants et des jeunes diplômés dans leurs projets entrepreneuriaux. \nDifférents évènements sont organisés pour sensibiliser les étudiants à l’entrepreneuriat dans une démarche d’apprentissage par l’action. "},
-"villes":{
-"ville_id" : [2]
-},
-"secteurs":{
-  "secteur_id":[1,2,3]
-},
-"sousCategories":{
-  "sous_categorie_id":[1,2,3]
-}
-}
-*/
+
 module.exports = articlesRouter

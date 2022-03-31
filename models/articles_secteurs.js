@@ -11,6 +11,15 @@ const validate = (data, forCreation = true) => {
   }).validate(data, { abortEarly: false }).error
 }
 
+
+//Find One by Secteur
+const findOneSecteur = (id) => {
+  return db
+    .query('SELECT nom_secteur FROM secteurs_has_articles inner join secteurs on secteur_id = id_secteur WHERE article_id = ?', [id])
+    .then(([results]) => results);
+};
+
+
 // Create One
 // POST ONE
 const create = (secteur_id, article_id) => {
@@ -44,5 +53,6 @@ module.exports = {
   validate,
   create,
   destroy,
+  findOneSecteur,
   update
 }

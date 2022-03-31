@@ -1,6 +1,6 @@
 const connection = require('../config/db')
 const Joi = require('joi')
-const { listenerCount } = require('../config/db')
+
 
 const db = connection.promise()
 

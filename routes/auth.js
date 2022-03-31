@@ -24,7 +24,6 @@ authRouter.post('/newToken', (req, res) => {
 
 // Fonction pour récuperer le token
 const getToken = req => {
-  console.log('authoi', req.headers.authorization)
   if (
     req.headers.authorization &&
     req.headers.authorization.split(' ')[0] === 'Bearer'
@@ -38,7 +37,6 @@ const getToken = req => {
 
 //routes
 authRouter.post('/protected', (req, res) => {
-  // console.log("reqqqqqqq", req.body)
   const token = getToken(req)
   jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
     if (err) {
