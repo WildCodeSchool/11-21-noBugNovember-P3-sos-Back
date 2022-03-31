@@ -5,9 +5,17 @@ Ce projet a était créé avec [Create React App](https://github.com/facebook/cr
 <br>
 ▶ Pour cloner le projet sur votre machine dans votre terminal utilisez la commande ```Git clone``` suivit du lien ```git@github.com:WildCodeSchool/11-21-noBugNovember-P3-sos-Back.git```
 
+▶ Pour commencer récuperez le fichier .SQL afin d'umporter la base de données dans votre Workbench dans le dossier ```BDD``` présant dans le repo et de bien renseignez vos variables d'environement en créant un fichier ```.env``` à l'aide du sample ```.env.sample```<br>
+
 ▶ Ensuite utilisez la commande ```npm i``` afin d'installer toutes les dépendances (composants externes utilisés).<br>
+
+Une fois l'installation terminée votre fichier ```package.json``` doit contenir ces dépendences ci : <br>
 <br>
-▶ Enfin utilisez la commande ```npm start``` pour lancer le projet en local.
+![fddb92e31d83720ec1d9b83ca9933b18](https://user-images.githubusercontent.com/89353029/161009840-2bdcb516-5366-4a42-bfc0-cb24ecd18088.png)
+
+Et une fois dans votre ```package.json``` editez votre ```"scripts"``` avec : ```"start": "nodemon server.js"``` afin de lancer le server avec nodemon.
+
+▶ Et enfin utilisez la commande ```npm start``` pour lancer le projet en local.
 
 Veillez à ce que le serveur Frontend tourne également sur votre machine que vous pouvez récupérer juste [ici](https://github.com/WildCodeSchool/11-21-noBugNovember-P3-sos-front)
 
