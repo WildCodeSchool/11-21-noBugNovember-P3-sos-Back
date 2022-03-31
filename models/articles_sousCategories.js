@@ -11,7 +11,16 @@ const validate = (data, forCreation = true) => {
   }).validate(data, { abortEarly: false }).error
 }
 
-// Create One
+
+
+//Find One by Secteur
+const findOneSousCat = (id) => {
+  return db
+    .query('SELECT nom_sous_categorie FROM articles_has_sous_categories inner join sous_categories on sous_categorie_id = id_sous_categorie WHERE article_id = ?', [id])
+    .then(([results]) => results);
+};
+
+
 // POST ONE
 const create = (article_id, sous_categorie_id) => {
   const sql =
@@ -45,5 +54,6 @@ module.exports = {
   validate,
   create,
   update,
-  destroy
+  destroy,
+  findOneSousCat
 }

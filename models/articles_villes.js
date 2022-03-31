@@ -11,6 +11,12 @@ const validate = (data, forCreation = true) => {
   }).validate(data, { abortEarly: false }).error
 }
 
+
+
+// Find One
+// READ ONE
+
+
 // Create One
 // POST ONE
 
@@ -29,9 +35,9 @@ const create = (ville_id, article_id) => {
 }
 
 //Find One
-const findOne = (id) => {
+const findOneVille = (id) => {
   return db
-    .query('SELECT * FROM villes_has_articles WHERE article_id = ?', [id])
+    .query('SELECT nom_ville FROM villes_has_articles inner join villes on ville_id = id_ville WHERE article_id = ?', [id])
     .then(([results]) => results);
 };
 
@@ -53,7 +59,7 @@ const update = (article_id, ville_id) => {
 module.exports = {
   validate,
   create,
-  findOne,
   update,
-  destroy
+  destroy,
+  findOneVille
 }

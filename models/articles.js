@@ -69,6 +69,12 @@ const findOne = id => {
     .then(([results]) => results[0])
 }
 
+const findOneDetail = id => {
+  return db
+    .query("SELECT art.titre, art.intro, art.para1, art.avantage, art.lien1, art.lien2, art.lien3, art.image FROM articles as art LEFT JOIN secteurs_has_articles as sec_art ON art.id_article = sec_art.article_id LEFT JOIN secteurs AS sec ON sec_art.secteur_id= sec.id_secteur LEFT JOIN articles_has_sous_categories AS art_ssc ON art_ssc.article_id=art.id_article LEFT JOIN sous_categories AS ssc ON art_ssc.sous_categorie_id=ssc.id_sous_categorie LEFT JOIN categories AS cat ON ssc.categorie_id=cat.id_categorie LEFT JOIN villes_has_articles as vil_art ON art.id_article = vil_art.article_id LEFT JOIN villes as vil ON vil_art.ville_id=vil.id_ville LEFT JOIN regions as reg ON vil.region_id = reg.id_region WHERE art.id_article = ? Group BY art.titre", [id])
+    .then(([results]) => results[0])
+}
+
 // Create One
 const create = ({
   titre,
@@ -133,5 +139,6 @@ module.exports = {
   create,
   findOne,
   update,
-  destroy
+  destroy,
+  findOneDetail
 }

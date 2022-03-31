@@ -19,7 +19,6 @@ categoriesRouter.get('/', (req, res) => {
           label: cat.nom_categorie
         })
       )
-      console.log(categorie)
       res.status(200).json(categorie)
     }
   })
@@ -123,27 +122,6 @@ categoriesRouter.delete('/:id', (req, res) => {
     })
 })
 
-// // INSERT INTO categories (nom_categorie)
-// // VALUES (?);
-// const express = require('express')
-// const router = express.Router()
-// const mysql = require('../config/db')
 
-// // router.get('/', (req,res) => {
-// //     res.status(200).send("Dans régions")
-// // })
-
-// router.get('/', (req, res) => {
-//     const sql = 'SELECT * FROM categories'
-//     mysql.query(sql, (err, result) => {
-//         if (err) {
-//             res.status(500).send('Error retrieving data from categories')
-//             console.error(err)
-//         } else {
-//             console.table(result)
-//             res.status(200).json(result)
-//         }
-//     })
-// })
 
 module.exports = categoriesRouter

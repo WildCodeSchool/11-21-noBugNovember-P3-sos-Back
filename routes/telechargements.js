@@ -1,10 +1,7 @@
-
 const express = require('express')
 
 const telechargementsRouter = express.Router()
 const Telechargement = require('../models/telechargements')
-
-
 
 
 //READ ALL

@@ -35,9 +35,57 @@ articlesRouter.get('/:id', (req, res) => {
     })
 })
 
-// READ One Article dans uen ville
+// READ One Article dans une ville
 articlesRouter.get('/villes/:id', (req, res) => {
-  ArticlesVilles.findOne(req.params.id)
+  const tab =[]
+  ArticlesVilles.findOneVille(req.params.id)
+    .then(articles => {
+      articles.forEach(el => tab.push(el.nom_ville))
+
+      res.status(200).json(tab.join(", "))
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).send('Error retrieving data from articles')
+    })
+})
+
+
+// READ One Article dans un secteur
+articlesRouter.get('/secteurs/:id', (req, res) => {
+  const tab =[]
+  ArticlesSecteurs.findOneSecteur(req.params.id)
+    .then(articles => {
+      articles.forEach(el => tab.push(el.nom_secteur))
+
+      res.status(200).json(tab.join(", "))
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).send('Error retrieving data from articles')
+    })
+})
+
+
+// READ One Article dans une ville
+articlesRouter.get('/sousCat/:id', (req, res) => {
+  const tab =[]
+  ArticlesSousCats.findOneSousCat(req.params.id)
+    .then(articles => {
+      articles.forEach(el => tab.push(el.nom_sous_categorie))
+
+      res.status(200).json(tab.join(", "))
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).send('Error retrieving data from articles')
+    })
+})
+
+// READ One Article avec details
+articlesRouter.get('/details/:id', (req, res) => {
+  console.log(req.params.id)
+  Articles.findOneDetail(req.params.id)
     .then(articles => {
       res.status(200).json(articles)
     })
