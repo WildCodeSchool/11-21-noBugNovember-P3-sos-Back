@@ -5,7 +5,7 @@ Ce projet a été créé avec [Create React App](https://github.com/facebook/cre
 <br>
 ▶ Pour cloner le projet sur votre machine dans votre terminal, utilisez la commande ```Git clone``` suivit du lien ```git@github.com:WildCodeSchool/11-21-noBugNovember-P3-sos-Back.git```
 
-▶ Pour commencer récuperez le fichier .SQL afin d'importer la base de données dans votre Workbench dans le dossier ```BDD``` présent dans le repo. Renseignez vos variables d'environement en créant un fichier ```.env``` à l'aide du sample ```.env.sample```<br>
+▶ Pour commencer récuperez le fichier .SQL afin d'importer la base de données dans votre Workbench dans le dossier ```BDD``` présent dans le repo. Renseignez vos variables d'environnement en créant un fichier ```.env``` à l'aide du sample ```.env.sample```<br>
 
 ▶ Ensuite, utilisez la commande ```npm i``` afin d'installer toutes les dépendances (composants externes utilisés).<br>
 
